@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-// @ts-expect-error Next.js processes global CSS imports at build time.
 import "./globals.css";
 import { interTight, jetbrainsMono } from "@/lib/fonts";
 import SmoothScrollProvider from "@/providers/SmoothScrollProvider";
