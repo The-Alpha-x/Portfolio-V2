@@ -5,12 +5,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
   output: "export",
-  // Mobile-first image pipeline (next/image): AVIF/WebP, phone-sized candidates, long CDN/browser cache.
+  // Static hosting has no Next.js image-optimization endpoint, so serve source assets directly.
   images: {
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [360, 414, 640, 768, 1024, 1280, 1600],
-    imageSizes: [96, 160, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
+    unoptimized: true,
   },
   // Import only the icons/modules actually used (smaller client bundles).
   experimental: {
