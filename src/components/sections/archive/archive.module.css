@@ -1,0 +1,65 @@
+/* Scene 04 — Engineering Archive (pinned cinematic stage). Crimson Protocol tokens only. */
+.root { position: relative; z-index: 10; width: 100%; }
+.stage { position: relative; display: flex; flex-direction: column; box-sizing: border-box; min-height: 100svh; padding: var(--section-pad-y) var(--section-pad-x) 5.5rem; }
+.stage[data-mode="scroll"] { height: 100svh; min-height: 0; overflow: hidden; padding-top: clamp(4.5rem, 9svh, 6rem); padding-bottom: 5rem; }
+.shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to left, rgb(8 8 9 / 0.72) 0%, rgb(8 8 9 / 0.3) 38%, transparent 62%), linear-gradient(to bottom, rgb(8 8 9 / 0.65), transparent 28%), linear-gradient(to top, rgb(8 8 9 / 0.7), transparent 22%); }
+.stage > :not(.shade) { position: relative; }
+
+.head { max-width: 60rem; }
+.eyebrow { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 0.9rem; }
+.mark { width: 6px; height: 6px; background: var(--c-crimson); box-shadow: var(--glow-crimson); }
+.title { margin: 0; color: var(--c-fg); font-weight: 600; text-transform: uppercase; line-height: 0.92; letter-spacing: -0.03em; font-size: clamp(1.8rem, 1rem + 2.6vw, 3.6rem); }
+.subtitle { margin: 0.6rem 0 0; color: var(--c-crimson); letter-spacing: 0.3em; }
+.srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.body { flex: 1; min-height: 0; display: flex; justify-content: flex-end; align-items: center; }
+.panels { display: grid; width: min(32rem, 46vw); min-width: 0; }
+.slot { grid-area: 1 / 1; min-width: 0; }
+.stage[data-mode="scroll"] .slot { visibility: hidden; will-change: opacity; } /* GSAP owns autoAlpha */
+.stage:not([data-mode="scroll"]) .slot[data-state="inactive"] { display: none; }
+
+/* project panel */
+.panel { position: relative; padding: clamp(1.1rem, 2.2vw, 2rem); background: linear-gradient(145deg, rgb(255 38 56 / 0.06), rgb(8 8 9 / 0.62) 55%); border: 1px solid rgb(53 48 52 / 0.7); backdrop-filter: blur(6px); overflow: hidden; }
+.panel::before, .panel::after { content: ""; position: absolute; width: 20px; height: 20px; border: 0 solid var(--c-crimson); pointer-events: none; }
+.panel::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; }
+.panel::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+.numeral { position: absolute; right: 0.6rem; top: -0.4rem; font-size: clamp(5rem, 12vw, 9rem); font-weight: 700; line-height: 1; letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1px rgb(255 38 56 / 0.28); pointer-events: none; user-select: none; }
+.meta { position: relative; display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.8rem; color: var(--c-metal); }
+.rule { width: 2rem; height: 1px; background: var(--c-crimson); }
+.name { position: relative; margin: 0; color: var(--c-fg); font-weight: 600; text-transform: uppercase; line-height: 0.95; letter-spacing: -0.03em; font-size: clamp(1rem, 0.8rem + 3.2vw, 2rem); overflow-wrap: anywhere; }
+.panel[data-kind="secondary"] .name { font-size: clamp(1.6rem, 0.8rem + 2.3vw, 2.8rem); }
+.tagline { position: relative; margin: 0.8rem 0 0; color: var(--c-metal); line-height: 1.5; max-width: 46ch; }
+.part { position: relative; margin: 0.6rem 0 0; color: var(--c-crimson); }
+.sub { margin: 1.1rem 0 0.5rem; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chips li { padding: 0.3rem 0.7rem; color: var(--c-fg); border: 1px solid var(--c-metal); font-weight: 600; font-size: 0.85rem; }
+.feat { margin: 0; padding: 0 0 0 1.1rem; display: grid; gap: 0.35rem; color: var(--c-fg); opacity: 0.9; font-size: 0.9rem; line-height: 1.45; }
+.feat li::marker { color: var(--c-crimson); }
+.shot { margin-top: 1rem; overflow: hidden; border: 1px solid var(--c-line); }
+.shot img { display: block; width: 100%; height: auto; max-height: 26svh; object-fit: cover; }
+.cta { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.25rem; min-height: 44px; padding: 0.6rem 1rem; color: var(--c-fg); background: transparent; border: 1px solid var(--c-crimson); cursor: pointer; transition: background 0.3s; }
+.cta:hover { background: rgb(255 38 56 / 0.12); }
+.cta:focus-visible, .selector button:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 3px; }
+
+/* project selector (bottom rail) */
+.selector { --fill: 0; position: absolute !important; left: var(--section-pad-x); right: var(--section-pad-x); bottom: 1.25rem; list-style: none; margin: 0; padding: 0.9rem 0 0; display: flex; justify-content: space-between; gap: 0.25rem; }
+.selector::before, .selector::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--c-line); }
+.selector::after { background: var(--c-crimson); box-shadow: var(--glow-crimson); transform: scaleX(var(--fill)); transform-origin: left; }
+.selector li { flex: 1 1 0; min-width: 0; }
+.selector button { display: flex; align-items: center; gap: 0.5rem; width: 100%; min-height: 44px; padding: 0.3rem 0.2rem; background: transparent; border: 0; cursor: pointer; text-align: left; color: var(--c-fg-muted); }
+.selector li[data-active] button { color: var(--c-fg); }
+.dot { flex: none; width: 9px; height: 9px; border: 1px solid var(--c-metal); background: var(--c-bg); transition: background 0.3s, box-shadow 0.3s, transform 0.3s; }
+.selector li[data-kind="featured"] .dot { width: 11px; height: 11px; }
+.selector li[data-active] .dot { background: var(--c-crimson); border-color: var(--c-crimson); box-shadow: var(--glow-crimson); transform: rotate(45deg); }
+.selName { color: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 1199px) {
+  .panels { width: min(26rem, 52vw); }
+  .selector li:not([data-active]) .selName { display: none; }
+  .selector li[data-active] { flex: 3 1 0; }
+  .feat { font-size: 0.85rem; }
+}
+@media (max-height: 700px) { .name { font-size: clamp(1.6rem, 6svh, 2.6rem); } .sub { margin-top: 0.7rem; } .shot { display: none; } }
+
+.skip { position: absolute; left: 1rem; top: 0.5rem; z-index: 70; padding: 0.6rem 1rem; color: var(--c-fg); background: var(--c-bg); border: 1px solid var(--c-crimson); transform: translateY(-300%); }
+.skip:focus { transform: none; outline: 2px solid var(--c-fg); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .dot, .cta { transition: none; } }

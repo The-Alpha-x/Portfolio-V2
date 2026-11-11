@@ -1,0 +1,56 @@
+/* Scene 03 — vertical list / fallback. Crimson Protocol tokens only. No horizontal overflow: every grid child min-width:0. */
+.root { position: relative; box-sizing: border-box; width: 100%; max-width: 48rem; margin: 0 auto; padding: var(--section-pad-y) var(--section-pad-x); }
+.head { margin-bottom: 1.5rem; }
+.eyebrow { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 1rem; }
+.mark { width: 6px; height: 6px; background: var(--c-crimson); box-shadow: var(--glow-crimson); }
+.title { margin: 0; color: var(--c-fg); font-weight: 600; text-transform: uppercase; line-height: 0.95; letter-spacing: -0.03em; font-size: clamp(2rem, 1rem + 7vw, 4rem); overflow-wrap: anywhere; }
+.subtitle { margin: 0.8rem 0 0; color: var(--c-crimson); letter-spacing: 0.22em; }
+
+/* sticky chip nav — ≥44px touch targets */
+.chips { position: sticky; top: calc(var(--nav-h) - 0.5rem); z-index: 5; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; margin: 0 0 1.75rem; padding: 0.5rem 0; background: rgb(8 8 9 / 0.88); backdrop-filter: blur(8px); }
+.chip { display: grid; gap: 0.1rem; justify-items: start; min-height: 44px; padding: 0.45rem 0.7rem; color: var(--c-fg-muted); background: transparent; border: 1px solid var(--c-line); cursor: pointer; font-size: 0.85rem; touch-action: manipulation; }
+.chip[aria-current="true"] { color: var(--c-fg); border-color: var(--c-crimson); background: rgb(255 38 56 / 0.08); }
+.chip[aria-current="true"] > span:first-child { color: var(--c-crimson); }
+
+/* vertical spine + compact nodes */
+.list { position: relative; list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; }
+.item { position: relative; min-width: 0; padding-left: 2rem; scroll-margin-top: calc(var(--nav-h) + 4.5rem); }
+.item::before { content: ""; position: absolute; left: 5px; top: 0.35rem; bottom: -1.5rem; width: 1px; background: var(--c-line); }
+.item:last-child::before { bottom: 0; }
+.item[data-visited]::before, .item[data-active]::before { background: linear-gradient(to bottom, var(--c-crimson), var(--c-crimson-deep)); }
+.node { position: absolute; left: 0; top: 0.35rem; width: 11px; height: 11px; background: var(--c-bg); border: 1px solid var(--c-metal); transition: background 0.3s, box-shadow 0.3s, transform 0.3s; }
+.item[data-visited] .node { border-color: var(--c-crimson-deep); background: var(--c-crimson-deep); }
+.item[data-active] .node { background: var(--c-crimson); border-color: var(--c-crimson); box-shadow: var(--glow-crimson); transform: rotate(45deg); }
+
+.card { min-width: 0; padding: 1.1rem 1.1rem 1.25rem; border: 1px solid rgb(53 48 52 / 0.7); background: linear-gradient(145deg, rgb(255 38 56 / 0.05), rgb(8 8 9 / 0.55) 55%); }
+.item[data-active] .card { border-color: var(--c-crimson-deep); }
+.meta { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin: 0 0 0.7rem; color: var(--c-metal); }
+.now { color: var(--c-crimson); }
+.company { margin: 0; color: var(--c-fg); font-weight: 600; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1; font-size: clamp(1.6rem, 1rem + 4.5vw, 2.4rem); overflow-wrap: anywhere; }
+.company:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 4px; }
+.position { margin: 0.6rem 0 0; color: var(--c-metal); font-size: 1rem; }
+.text { margin: 1rem 0 0; color: var(--c-fg-muted); line-height: 1.6; }
+.pending { display: inline-block; margin: 1rem 0 0; padding: 0.4rem 0.6rem; border: 1px dashed var(--c-line); font-size: 0.7rem; }
+.sub { margin: 1.25rem 0 0.6rem; }
+.bullets { margin: 0; padding: 0 0 0 1.1rem; display: grid; gap: 0.7rem; color: var(--c-fg); opacity: 0.92; line-height: 1.55; font-size: 0.95rem; }
+.bullets li::marker { color: var(--c-crimson); }
+.tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag { padding: 0.35rem 0.7rem; color: var(--c-fg); border: 1px solid var(--c-metal); font-weight: 600; font-size: 0.85rem; overflow-wrap: anywhere; }
+
+.chip:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 2px; }
+@media (min-width: 640px) { .card { padding: 1.5rem 1.75rem; } }
+@media (prefers-reduced-motion: reduce) { .node { transition: none; } }
+
+/* expandable company details (native <details>) */
+.more { margin-top: 1.1rem; border-top: 1px solid var(--c-line); }
+.moreSum { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 48px; padding: 0.4rem 0; cursor: pointer; list-style: none; color: var(--c-metal); touch-action: manipulation; }
+.moreSum::-webkit-details-marker { display: none; }
+.moreSum:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 2px; }
+.moreIcon { position: relative; flex: none; width: 14px; height: 14px; }
+.moreIcon::before, .moreIcon::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--c-crimson); transition: transform 0.3s var(--ease-cinematic); }
+.moreIcon::after { transform: rotate(90deg); }
+.more[open] .moreIcon::after { transform: rotate(0); }
+.more[open] > .moreSum { color: var(--c-fg); }
+@media (hover: hover) { .moreSum:hover { color: var(--c-fg); } }
+.more .sub:first-of-type { margin-top: 0.5rem; }
+@media (prefers-reduced-motion: reduce) { .moreIcon::before, .moreIcon::after { transition: none; } }

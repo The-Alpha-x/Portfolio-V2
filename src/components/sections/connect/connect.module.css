@@ -1,0 +1,165 @@
+/* Scene 06 — Establish Connection. Crimson Protocol tokens only. */
+.root { position: relative; z-index: 10; width: 100%; }
+.srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ───────────── stage (pinned on the 3D tiers) ───────────── */
+.stage { position: relative; isolation: isolate; box-sizing: border-box; display: flex; flex-direction: column; min-height: 100svh; padding: clamp(5rem, 11svh, 7rem) var(--section-pad-x) clamp(2rem, 6svh, 4rem); }
+.stage[data-mode="scroll"] { height: 100svh; min-height: 0; overflow: hidden; }
+.shade { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to right, rgb(8 8 9 / 0.88) 0%, rgb(8 8 9 / 0.55) 38%, transparent 62%), linear-gradient(to bottom, rgb(8 8 9 / 0.7), transparent 24%), linear-gradient(to top, rgb(8 8 9 / 0.75), transparent 22%); }
+
+.title { display: flex; align-items: center; gap: 0.75rem; margin: 0; color: var(--c-fg-muted); font-weight: 400; }
+.mark { flex: none; width: 6px; height: 6px; background: var(--c-crimson); box-shadow: var(--glow-crimson); }
+
+.copy { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: clamp(1.25rem, 3.6svh, 2.4rem); width: 100%; max-width: 46rem; }
+@media (min-width: 1024px) { .copy { max-width: min(46rem, 52vw); } }
+
+/* ───────────── metallic headline ───────────── */
+.headline { margin: 0; font-weight: 600; text-transform: uppercase; line-height: 0.95; letter-spacing: -0.025em; text-wrap: balance;
+  font-size: clamp(2.1rem, 0.6rem + min(3.7vw, 7.4svh), 5.2rem); filter: drop-shadow(0 0 44px rgb(255 38 56 / 0.22)); }
+.line { display: block; }
+.line + .line { margin-top: 0.12em; }
+.word { display: inline-block; white-space: nowrap; }
+.mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0.02em 0.01em 0.06em; margin: -0.02em -0.01em -0.06em; }
+.char { display: inline-block; will-change: transform; color: var(--c-metal);
+  background: linear-gradient(180deg, var(--c-fg) 0%, var(--c-metal) 38%, var(--c-fg-muted) 54%, var(--c-metal) 76%, var(--c-fg-muted) 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+@media (forced-colors: active) { .char { background: none; -webkit-text-fill-color: currentColor; color: CanvasText; } }
+
+/* ───────────── contact channels ───────────── */
+.channels { list-style: none; margin: 0; padding: 0; }
+.channels > li { border-top: 1px solid var(--c-line); }
+.channels > li:last-child { border-bottom: 1px solid var(--c-line); }
+.channel { position: relative; display: grid; grid-template-columns: 6.75rem minmax(0, 1fr) auto; align-items: center; gap: 1rem; min-height: 2.9rem; padding: 0.55rem 0; color: var(--c-fg); text-decoration: none; }
+.channel::after { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--c-crimson); box-shadow: var(--glow-crimson); transform: scaleX(0); transform-origin: right; transition: transform 0.6s var(--ease-cinematic); }
+.channel:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+@media (hover: hover) { .channel:hover::after { transform: scaleX(1); transform-origin: left; } }
+.channel:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 2px; }
+.chLabel { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--c-fg-muted); transition: color 0.4s var(--ease-cinematic); }
+.chValue { min-width: 0; overflow-wrap: anywhere; font-weight: 500; font-size: 0.98rem; transition: transform 0.5s var(--ease-cinematic); }
+.chArrow { color: var(--c-fg-muted); transition: transform 0.5s var(--ease-cinematic), color 0.4s var(--ease-cinematic); }
+.channel:focus-visible .chLabel, .channel:focus-visible .chArrow { color: var(--c-crimson); }
+.channel:focus-visible .chValue { transform: translateX(4px); }
+.channel:focus-visible .chArrow { transform: translate(3px, -3px); }
+.channel:active .chLabel, .channel:active .chArrow { color: var(--c-crimson); }
+@media (hover: hover) {
+  .channel:hover .chLabel, .channel:hover .chArrow { color: var(--c-crimson); }
+  .channel:hover .chValue { transform: translateX(4px); }
+  .channel:hover .chArrow { transform: translate(3px, -3px); }
+}
+.primaryRow .channel { min-height: 4.2rem; }
+.primaryRow .chValue { font-size: var(--fs-lead); font-weight: 600; letter-spacing: -0.01em; }
+.todo { padding: 0.8rem 0; color: var(--c-fg-muted); font-style: normal; }
+
+/* ───────────── actions + animated CTA ───────────── */
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.2rem; }
+.ctaWrap { position: relative; display: inline-flex; }
+.ctaWrap::after { content: ""; position: absolute; inset: 0; border: 1px solid var(--c-crimson); opacity: 0; pointer-events: none; }
+.stage[data-live] .ctaWrap::after, .stage[data-tier="list"] .ctaWrap::after { animation: signal 3.2s var(--ease-cinematic) 1.2s infinite; }
+@keyframes signal { 0% { opacity: 0.65; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(1.16, 1.7); } }
+.cta, .cv { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 0.9rem; overflow: hidden; min-height: 48px; padding: 0.95rem 1.6rem; color: var(--c-fg); text-decoration: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.26em; background: rgb(25 20 22 / 0.65); border: 1px solid var(--c-line); backdrop-filter: blur(8px);
+  transition: border-color 0.5s var(--ease-cinematic), box-shadow 0.5s var(--ease-cinematic), transform 0.5s var(--ease-cinematic); }
+.cta { border-color: var(--c-crimson-deep); }
+.cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, var(--c-crimson-deep), var(--c-crimson)); transform: translateX(-101%); transition: transform 0.6s var(--ease-cinematic); }
+.cta:focus-visible, .cv:focus-visible { border-color: var(--c-crimson); box-shadow: var(--glow-crimson); transform: translateY(-2px); }
+.cta:focus-visible::before, .cta:active::before { transform: translateX(0); }
+@media (hover: hover) {
+  .cta:hover, .cv:hover { border-color: var(--c-crimson); box-shadow: var(--glow-crimson); transform: translateY(-2px); }
+  .cta:hover::before { transform: translateX(0); }
+  .cv:hover svg { transform: translateY(3px); }
+  .cta:hover svg { transform: rotate(-12deg); }
+}
+.cta:focus-visible, .cv:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 3px; }
+.cta:active, .cv:active { transform: translateY(0) scale(0.985); }
+.cta svg, .cv svg { transition: transform 0.5s var(--ease-cinematic); }
+.cv:focus-visible svg { transform: translateY(3px); }
+.cta:focus-visible svg { transform: rotate(-12deg); }
+
+/* ───────────── form dock (normal flow, after the pinned stage) ───────────── */
+.dock { position: relative; isolation: isolate; box-sizing: border-box; min-height: 100svh; display: flex; align-items: center; padding: var(--section-pad-y) var(--section-pad-x); }
+.dock::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to right, rgb(8 8 9 / 0.9), rgb(8 8 9 / 0.6) 45%, transparent 72%), linear-gradient(to bottom, transparent, rgb(8 8 9 / 0.5) 40%, rgb(8 8 9 / 0.85)); }
+.formWrap { width: min(34rem, 100%); }
+.formTitle { margin: 0; color: var(--c-fg); font-weight: 600; font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.6rem); line-height: 1; letter-spacing: -0.02em; }
+.formTitle:focus { outline: none; }
+.formNote { margin: 0.8rem 0 1.8rem; max-width: 30rem; color: var(--c-metal); line-height: 1.55; font-size: 0.95rem; }
+
+.form { display: grid; gap: 1.5rem; }
+.summary { margin: 0; color: var(--c-crimson); font-weight: 600; font-size: 0.9rem; }
+.summary:empty { margin: 0; }
+.field { display: grid; gap: 0.35rem; position: relative; }
+.fieldLabel { color: var(--c-fg-muted); }
+.input { box-sizing: border-box; width: 100%; min-height: 48px; padding: 0.65rem 0; color: var(--c-fg); font: inherit; font-size: max(16px, 1rem); /* ≥16px: iOS Safari zooms the page on focus below that */ background: transparent; border: 0; border-bottom: 1px solid var(--c-line); border-radius: 0; resize: vertical; transition: border-color 0.35s var(--ease-cinematic), box-shadow 0.35s var(--ease-cinematic); }
+.input:hover { border-bottom-color: var(--c-metal); }
+.input:focus { border-bottom-color: var(--c-crimson); box-shadow: 0 1px 0 var(--c-crimson), 0 10px 18px -14px rgb(255 38 56 / 0.7); }
+.input:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 4px; }
+.input[aria-invalid="true"] { border-bottom-color: var(--c-crimson); }
+textarea.input { min-height: 7.5rem; line-height: 1.5; }
+.count { justify-self: end; color: var(--c-fg-muted); font-variant-numeric: tabular-nums; }
+.error { margin: 0; color: var(--c-crimson); font-size: 0.85rem; line-height: 1.4; }
+
+.submit { justify-self: start; display: inline-flex; align-items: center; gap: 0.9rem; min-height: 48px; padding: 0.95rem 1.6rem; cursor: pointer; color: var(--c-fg);
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; background: linear-gradient(100deg, var(--c-crimson-deep), var(--c-crimson)); border: 1px solid var(--c-crimson);
+  transition: box-shadow 0.5s var(--ease-cinematic), transform 0.5s var(--ease-cinematic), filter 0.5s var(--ease-cinematic); }
+.submit:focus-visible { box-shadow: var(--glow-crimson); transform: translateY(-2px); filter: brightness(1.08); }
+@media (hover: hover) { .submit:hover { box-shadow: var(--glow-crimson); transform: translateY(-2px); filter: brightness(1.08); } }
+.submit:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 3px; }
+.submit:active { transform: translateY(0) scale(0.985); }
+
+.statusRegion:empty { margin-top: -1.5rem; } /* keep the live region in the tree (announcements) but collapse its grid gap */
+.status { padding: 1rem 1.1rem; background: rgb(25 20 22 / 0.7); border: 1px solid var(--c-line); border-left: 2px solid var(--c-crimson); }
+.statusTitle { margin: 0 0 0.4rem; color: var(--c-fg); font-weight: 600; }
+.statusText { margin: 0.4rem 0 0; color: var(--c-metal); font-size: 0.9rem; line-height: 1.55; }
+.statusActions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.9rem; }
+.statusActions button { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0.4rem 0.9rem; color: var(--c-fg); font: inherit; font-size: 0.85rem; background: transparent; border: 1px solid var(--c-line); cursor: pointer; transition: border-color 0.25s, background 0.25s; }
+@media (hover: hover) { .statusActions button:hover { border-color: var(--c-crimson); background: rgb(255 38 56 / 0.12); } }
+.statusActions button:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 3px; }
+
+/* ───────────── "list" tier: static column, portrait as an image, CSS-only haze ───────────── */
+.portrait { position: relative; z-index: -1; width: min(78vw, 21rem); margin: 0.5rem auto 0; aspect-ratio: 3 / 4; pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 62% 64% at 50% 48%, #000 52%, transparent 100%); mask-image: radial-gradient(ellipse 62% 64% at 50% 48%, #000 52%, transparent 100%); }
+.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9) saturate(0.95); }
+.stage[data-tier="list"] { padding-top: clamp(4.5rem, 12svh, 6rem); }
+.stage[data-tier="list"]::before { content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background: radial-gradient(60% 32% at 50% 18%, rgb(255 38 56 / 0.14), transparent 70%), radial-gradient(55% 30% at 10% 95%, rgb(157 24 38 / 0.14), transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent); }
+.stage[data-tier="list"] .shade { background: linear-gradient(to bottom, transparent 30%, rgb(8 8 9 / 0.7) 60%); }
+.stage[data-tier="list"] .title { margin-top: 1rem; }
+.stage[data-tier="list"] .copy { margin-top: 1.25rem; justify-content: flex-start; }
+/* no-WebGL desktops get the same column; give the portrait a side-by-side home when there is room */
+@media (min-width: 1024px) {
+  .stage[data-tier="list"] .portrait { position: absolute; z-index: -1; right: var(--section-pad-x); top: 50%; width: min(36vw, 30rem); margin: 0; transform: translateY(-48%); }
+}
+.stage[data-tier="list"] .portrait { animation: portraitIn 2.2s var(--ease-cinematic) both; }
+@keyframes portraitIn { from { opacity: 0; } }
+
+@media (max-width: 640px) {
+  .channel { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.15rem; }
+  .chLabel { grid-column: 1 / -1; }
+  .chValue { grid-column: 1; }
+  .chArrow { grid-column: 2; grid-row: 2; }
+}
+@media (max-height: 720px) and (min-width: 1024px) {
+  .channel { min-height: 2.5rem; padding: 0.35rem 0; }
+  .primaryRow .channel { min-height: 3.4rem; }
+  .copy { gap: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ctaWrap::after, .stage[data-tier="list"] .portrait { animation: none !important; }
+  .channel::after, .chValue, .chArrow, .cta, .cv, .cta::before, .submit { transition: none; }
+}
+
+/* ───────────── MOBILE (Task 10): thumb-sized, full-width actions; nothing wider than the screen ───────────── */
+@media (max-width: 639px) {
+  .actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  .ctaWrap { display: flex; }
+  .cta, .cv { width: 100%; box-sizing: border-box; justify-content: space-between; min-height: 52px; letter-spacing: 0.2em; }
+  .submit { justify-self: stretch; justify-content: space-between; min-height: 52px; }
+  .statusActions { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .statusActions button { justify-content: center; }
+  .channel { min-height: 56px; }
+  .chValue { overflow-wrap: anywhere; } /* long e-mail addresses wrap instead of overflowing 320px screens */
+  .dock { min-height: 0; padding-top: 3rem; padding-bottom: max(3rem, env(safe-area-inset-bottom)); }
+  .stage { padding-left: max(var(--section-pad-x), env(safe-area-inset-left)); padding-right: max(var(--section-pad-x), env(safe-area-inset-right)); }
+}

@@ -1,0 +1,50 @@
+/* CRIMSON PROTOCOL — design tokens. Single source of truth for CSS. */
+:root {
+  --c-bg: #080809;
+  --c-bg-alt: #101012;
+  --c-surface: #191416;
+  --c-line: #353034;
+  --c-crimson: #ff2638;
+  --c-crimson-deep: #9d1826; /* decorative only (lines, glows): 2.5:1 on bg, fails AA for text */
+  --c-crimson-text: #e83649; /* small crimson text: ≥4.5:1 on --c-bg */
+  --c-fg: #f2eeee;
+  --c-fg-muted: #969092;
+  --c-metal: #c1b9b8;
+
+  --glow-crimson: 0 0 24px rgb(255 38 56 / 0.35);
+
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Fluid type scale */
+  --fs-label: 0.6875rem;
+  --fs-body: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  --fs-lead: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  --fs-h2: clamp(2rem, 1.2rem + 3.2vw, 4.5rem);
+  --fs-h1: clamp(3rem, 1.5rem + 7vw, 9rem);
+
+  --tracking-label: 0.22em;
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --section-pad-x: clamp(1.25rem, 4vw, 4rem);
+  --section-pad-y: clamp(4rem, 10svh, 8rem);
+  --nav-h: 4.5rem; /* fixed header height (chrome.module.css .nav); sticky UI and scroll-margin offsets read this */
+}
+
+html { background: var(--c-bg); color: var(--c-fg); }
+body { font-family: var(--font-sans); font-size: var(--fs-body); -webkit-font-smoothing: antialiased; }
+::selection { background: var(--c-crimson); color: var(--c-bg); }
+
+/* Lenis recommended styles */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--c-fg-muted);
+}
+
+:focus-visible { outline: 1px solid var(--c-crimson); outline-offset: 4px; }

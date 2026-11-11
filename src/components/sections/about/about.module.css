@@ -1,0 +1,162 @@
+/* Scene 02 — Human Origin. Reads tokens.css. */
+
+.scrollSpace { height: 520svh; }
+@media (max-width: 1023px) { .scrollSpace { height: 460svh; } }
+
+.stage { position: sticky; top: 0; height: 100svh; overflow: hidden; --mx: 0; --my: 0; }
+
+/* Keeps text legible over the glowing corridor */
+.shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to right, rgb(8 8 9 / 0.84) 0%, rgb(8 8 9 / 0.5) 36%, transparent 62%),
+    radial-gradient(ellipse 85% 75% at 50% 50%, transparent 50%, rgb(8 8 9 / 0.7) 100%);
+}
+@media (max-width: 1023px) {
+  .shade {
+    background:
+      linear-gradient(to bottom, rgb(8 8 9 / 0.6), rgb(8 8 9 / 0.72)),
+      radial-gradient(ellipse 90% 80% at 50% 50%, transparent 45%, rgb(8 8 9 / 0.75) 100%);
+  }
+}
+
+/* ───────── layout ───────── */
+.content {
+  position: absolute; inset: 0; display: grid; align-content: center;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem); row-gap: clamp(1rem, 3svh, 2rem);
+  padding: clamp(4.5rem, 12svh, 7rem) var(--section-pad-x) clamp(1.25rem, 4svh, 2.5rem);
+}
+.head { grid-column: 1 / span 7; grid-row: 1; align-self: end; }
+.intro { grid-column: 1 / span 6; grid-row: 2; max-width: 38rem; align-self: start; }
+.aside {
+  grid-column: 8 / span 5; grid-row: 1 / span 2; align-self: center; list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+@media (max-width: 1023px) {
+  .content { grid-template-columns: 1fr; grid-template-rows: auto 1fr; align-content: start; }
+  .head, .intro, .aside { grid-column: 1; }
+  .head { grid-row: 1; align-self: start; }
+  .intro, .aside { grid-row: 2; }              /* overlap: highlights replace the text */
+  .aside { grid-template-columns: 1fr 1fr; gap: 0.7rem; align-self: start; }
+}
+
+/* ───────── type ───────── */
+.eyebrow { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 clamp(0.75rem, 2svh, 1.5rem); }
+.mark { width: 6px; height: 6px; background: var(--c-crimson); box-shadow: var(--glow-crimson); }
+
+.heading {
+  margin: 0; color: var(--c-fg); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(2.4rem, min(1rem + 6.2vw, 14svh), 7.5rem); line-height: 0.92; letter-spacing: -0.03em;
+}
+.lineMask { display: block; overflow: hidden; padding-bottom: 0.06em; }
+.lineInner { display: block; }
+.dot { color: var(--c-crimson); }
+
+.lead, .body { margin: 0; color: var(--c-fg-muted); }
+.lead { font-size: clamp(1rem, min(0.9rem + 0.55vw, 2.7svh), 1.45rem); line-height: 1.5; font-weight: 500; }
+.body { margin-top: clamp(0.7rem, 1.8svh, 1.1rem); font-size: clamp(0.92rem, min(0.85rem + 0.3vw, 2.3svh), 1.1rem); line-height: 1.6; }
+.em { color: var(--c-fg); }
+
+/* ───────── holographic highlights ───────── */
+.wrap { translate: calc(var(--mx) * var(--depth) * 1px) calc(var(--my) * var(--depth) * 0.6px); }
+.wide { grid-column: span 2; }
+.drop { margin-top: 1.4rem; }
+@media (max-width: 1023px) { .drop { margin-top: 0; } .wrap { translate: none; } }
+
+.card {
+  position: relative; height: 100%; padding: 1.2rem 1.35rem;
+  background: linear-gradient(145deg, rgb(255 38 56 / 0.07), rgb(16 16 18 / 0.58) 55%);
+  border: 1px solid rgb(53 48 52 / 0.85); backdrop-filter: blur(10px);
+  transition: border-color 0.5s var(--ease-cinematic), box-shadow 0.5s var(--ease-cinematic);
+}
+.card::before { /* scanlines */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgb(255 255 255 / 0.018) 3px 4px);
+}
+.card::after { /* corner brackets */
+  content: ""; position: absolute; inset: -1px; pointer-events: none;
+  background:
+    linear-gradient(var(--c-crimson), var(--c-crimson)) top left / 14px 1px no-repeat,
+    linear-gradient(var(--c-crimson), var(--c-crimson)) top left / 1px 14px no-repeat,
+    linear-gradient(var(--c-crimson), var(--c-crimson)) bottom right / 14px 1px no-repeat,
+    linear-gradient(var(--c-crimson), var(--c-crimson)) bottom right / 1px 14px no-repeat;
+}
+@media (hover: hover) { .card:hover { border-color: var(--c-crimson-deep); box-shadow: var(--glow-crimson); } }
+
+.float { display: flex; flex-direction: column; gap: 0.8rem; height: 100%; animation: hover 7s ease-in-out infinite; animation-delay: var(--delay, 0s); }
+@keyframes hover { 50% { transform: translateY(-6px); } }
+
+.idx { color: var(--c-crimson); }
+.icon { color: var(--c-metal); }
+.label { color: var(--c-fg); letter-spacing: 0.2em; line-height: 1.5; }
+.numRow { display: flex; align-items: baseline; line-height: 0.9; }
+.num { font-size: clamp(3.5rem, 2rem + 4vw, 6.5rem); font-weight: 600; letter-spacing: -0.04em; color: var(--c-fg); font-variant-numeric: tabular-nums; }
+.plus { font-size: clamp(2rem, 1.2rem + 2vw, 3.5rem); font-weight: 500; color: var(--c-crimson); margin-left: 0.1em; }
+
+@media (max-width: 1023px) {
+  .card { padding: 0.9rem 1rem; }
+  .float { gap: 0.55rem; }
+  .num { font-size: clamp(2.8rem, 14vw, 4.5rem); }
+  .label { font-size: 0.62rem; letter-spacing: 0.16em; }
+}
+
+/* ───────── progress rail + hand-off cue ───────── */
+.rail { position: absolute; right: calc(var(--section-pad-x) * 0.45); top: 22%; bottom: 22%; width: 1px; background: var(--c-line); display: none; }
+@media (min-width: 1024px) { .rail { display: block; } }
+.railFill { position: absolute; inset: 0; background: var(--c-crimson); transform-origin: top; transform: scaleY(0); }
+
+.cueWrap { position: absolute; inset: auto 0 clamp(1.25rem, 4svh, 2.5rem) 0; display: flex; justify-content: center; pointer-events: none; }
+.cue { display: inline-flex; align-items: center; gap: 1rem; color: var(--c-fg); opacity: 0; visibility: hidden; }
+.cueLine { width: 3rem; height: 1px; background: linear-gradient(to right, var(--c-crimson), transparent); animation: sweep 2.4s var(--ease-cinematic) infinite; transform-origin: left; }
+@keyframes sweep { 0% { transform: scaleX(0); } 60%, 100% { transform: scaleX(1); opacity: 0.3; } }
+
+/* ───────── reduced motion: no pin, everything visible, flow layout ───────── */
+@media (prefers-reduced-motion: reduce) {
+  .scrollSpace { height: auto; }
+  .stage { position: relative; height: auto; min-height: 100svh; overflow: visible; }
+  .content { position: relative; inset: auto; min-height: 100svh; }
+  .float, .cueLine { animation: none; }
+  .rail, .cueWrap { display: none; }
+  .wrap { translate: none; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 1023px) {
+  .intro, .aside { grid-row: auto; }
+  .aside { margin-top: 1.5rem; }
+}
+
+/* ───────────── MOBILE (Task 10) ───────────── */
+/* Phones/tablets: a blur over a live WebGL layer + four infinite float animations is the most expensive thing on this screen.
+   Use a denser flat panel instead (same look, no per-frame blur) and drop the idle float. */
+@media (max-width: 1023px) {
+  .card { backdrop-filter: none; background: linear-gradient(145deg, rgb(255 38 56 / 0.09), rgb(16 16 18 / 0.86) 60%); }
+  .float { animation: none; }
+  .label { font-size: 0.68rem; overflow-wrap: anywhere; }
+  .content { padding-left: max(var(--section-pad-x), env(safe-area-inset-left)); padding-right: max(var(--section-pad-x), env(safe-area-inset-right)); }
+}
+@media (max-width: 359px) {
+  .label { letter-spacing: 0.1em; }
+  .card { padding: 0.8rem 0.85rem; }
+}
+/* Short screens (small phones, phones on their side): the stage is 100svh and clips, so the copy must fit. */
+@media (max-width: 1023px) and (max-height: 640px) and (orientation: portrait) {
+  .heading { font-size: clamp(2rem, 11vw, 2.6rem); }
+  .lead { font-size: 0.95rem; line-height: 1.45; }
+  .body { font-size: 0.86rem; line-height: 1.5; margin-top: 0.6rem; }
+  .content { padding-top: 4.5rem; row-gap: 0.75rem; }
+}
+@media (max-width: 1023px) and (orientation: landscape) and (max-height: 560px) {
+  .content { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; align-content: center; column-gap: 1.5rem; padding-top: 4.25rem; padding-bottom: 0.75rem; }
+  .head { grid-column: 1; grid-row: 1; align-self: center; }
+  .intro, .aside { grid-column: 2; grid-row: 1; align-self: center; }
+  .heading { font-size: clamp(1.9rem, 9svh, 2.8rem); }
+  .lead { font-size: 0.85rem; line-height: 1.45; }
+  .body { font-size: 0.78rem; line-height: 1.45; margin-top: 0.45rem; }
+  .aside { gap: 0.5rem; }
+  .wide { grid-column: auto; }
+  .card { padding: 0.6rem 0.75rem; }
+  .num { font-size: clamp(2rem, 14svh, 3rem); }
+  .plus { font-size: 1.4rem; }
+  .float { gap: 0.3rem; }
+  .eyebrow { margin-bottom: 0.5rem; }
+}

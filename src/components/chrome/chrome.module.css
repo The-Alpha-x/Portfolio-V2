@@ -1,0 +1,118 @@
+/* ───────────── nav ─────────────
+ * <1024px : brand mark · CONTACT cta · MENU button (full-screen overlay)   — 64px bar, soft scrim, 44px targets
+ * ≥1024px : brand · scene numbers · CONTACT cta     ≥1280px: + scene names
+ */
+.nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 50; box-sizing: border-box; min-height: var(--nav-h, 4.5rem);
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  padding: clamp(0.5rem, 2.6svh, 1.75rem) max(var(--section-pad-x), env(safe-area-inset-right)) clamp(0.5rem, 2.6svh, 1.75rem) max(var(--section-pad-x), env(safe-area-inset-left));
+  padding-top: max(clamp(0.5rem, 2.6svh, 1.75rem), env(safe-area-inset-top));
+}
+/* Scrim: text scrolling under the bar never collides with the nav labels. No backdrop-filter here — blurring a live WebGL layer is costly on phones. */
+.nav::before { content: ""; position: absolute; inset: 0 0 -1.25rem 0; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, rgb(8 8 9 / 0.9) 0%, rgb(8 8 9 / 0.62) 60%, transparent 100%); }
+.brand { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; min-width: 44px; min-height: 44px; color: var(--c-fg); text-decoration: none; }
+.brandMark {
+  display: grid; place-items: center; width: 2.5rem; height: 2.5rem; /* 40px visual, 44px target via .brand */
+  border: 1px solid var(--c-line); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em;
+  background: rgb(16 16 18 / 0.7);
+}
+.brandText { display: none; }
+@media (min-width: 1024px) { .brandText { display: inline; } .brandMark { width: 2rem; height: 2rem; } }
+
+.links { display: none; align-items: center; gap: clamp(0.25rem, 1.6vw, 2.5rem); list-style: none; margin: 0; padding: 0; }
+@media (min-width: 1024px) { .links { display: flex; } }
+.link {
+  position: relative; display: inline-flex; justify-content: center; align-items: center; gap: 0.55rem; min-width: 44px; min-height: 44px; padding: 0 0.2rem;
+  color: var(--c-fg-muted); text-decoration: none; transition: color 0.35s var(--ease-cinematic);
+}
+.link i { font-style: normal; color: var(--c-crimson-text); transition: color 0.35s var(--ease-cinematic); }
+.link::after {
+  content: ""; position: absolute; left: 12%; right: 12%; bottom: 6px; height: 1px; background: var(--c-crimson);
+  transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease-cinematic);
+}
+.link:focus-visible { color: var(--c-fg); }
+.link:focus-visible i { color: var(--c-crimson); }
+.link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+@media (hover: hover) {
+  .link:hover { color: var(--c-fg); }
+  .link:hover i { color: var(--c-crimson); }
+  .link:hover::after { transform: scaleX(1); transform-origin: left; }
+}
+.link[aria-current="true"] { color: var(--c-fg); }
+.link[aria-current="true"] i { color: var(--c-crimson); }
+.link[aria-current="true"]::after { transform: scaleX(1); }
+/* names: screen readers always; sighted users from 1280px (the row would overflow before that) */
+.name { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (min-width: 1280px) { .name { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; } .link { padding: 0 0.4rem; } }
+
+/* ───────────── right cluster: contact CTA + menu button ───────────── */
+.actions { display: flex; align-items: center; gap: 0.5rem; }
+.contactCta {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 0.95rem;
+  color: var(--c-fg); text-decoration: none; background: linear-gradient(100deg, var(--c-crimson-deep), var(--c-crimson)); border: 1px solid var(--c-crimson);
+  letter-spacing: 0.2em; touch-action: manipulation; transition: box-shadow 0.4s var(--ease-cinematic), filter 0.4s var(--ease-cinematic);
+}
+.contactCta:focus-visible { box-shadow: var(--glow-crimson); filter: brightness(1.1); outline: 2px solid var(--c-fg); outline-offset: 3px; }
+@media (hover: hover) { .contactCta:hover { box-shadow: var(--glow-crimson); filter: brightness(1.1); } }
+.contactCta:active { filter: brightness(0.92); }
+
+.menuBtn {
+  display: inline-flex; align-items: center; gap: 0.6rem; min-width: 44px; min-height: 44px; padding: 0 0.8rem;
+  color: var(--c-fg); background: rgb(16 16 18 / 0.7); border: 1px solid var(--c-line); cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: inherit; touch-action: manipulation;
+}
+.menuBtn:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 3px; }
+@media (hover: hover) { .menuBtn:hover { border-color: var(--c-crimson); } }
+@media (min-width: 1024px) { .menuBtn { display: none; } }
+.burger { position: relative; display: block; width: 16px; height: 9px; flex: none; }
+.burger i { position: absolute; left: 0; right: 0; height: 1px; background: currentColor; transition: transform 0.35s var(--ease-cinematic), top 0.35s var(--ease-cinematic); }
+.burger i:first-child { top: 0; } .burger i:last-child { top: 8px; }
+.menuBtn[aria-expanded="true"] .burger i:first-child { top: 4px; transform: rotate(45deg); }
+.menuBtn[aria-expanded="true"] .burger i:last-child { top: 4px; transform: rotate(-45deg); }
+@media (max-width: 359px) { .menuText { display: none; } .contactCta { padding: 0 0.7rem; letter-spacing: 0.14em; } } /* 320px: icon-only menu button keeps the bar inside the viewport */
+
+/* ───────────── full-screen overlay (<1024px) ───────────── */
+.overlay {
+  position: fixed; inset: 0; z-index: 45; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: clamp(1.25rem, 4svh, 2.5rem);
+  padding: calc(var(--nav-h, 4.5rem) + 1rem) max(var(--section-pad-x), env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(var(--section-pad-x), env(safe-area-inset-left));
+  overflow-y: auto; overscroll-behavior: contain;
+  background: radial-gradient(70% 45% at 85% 8%, rgb(255 38 56 / 0.16), transparent 70%), rgb(8 8 9 / 0.97);
+  animation: overlayIn 0.35s var(--ease-cinematic) both;
+}
+@keyframes overlayIn { from { opacity: 0; } }
+.overlayKicker { margin: 0; }
+.overlayList { list-style: none; margin: 0; padding: 0; display: grid; }
+.overlayList li { border-top: 1px solid var(--c-line); }
+.overlayList li:last-child { border-bottom: 1px solid var(--c-line); }
+.overlayLink {
+  display: flex; align-items: baseline; gap: 1rem; min-height: 56px; padding: clamp(0.55rem, 1.8svh, 1rem) 0;
+  color: var(--c-fg-muted); text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1;
+  font-size: clamp(1.5rem, 1rem + min(5vw, 4.4svh), 2.6rem); touch-action: manipulation;
+}
+.overlayLink i { font-style: normal; color: var(--c-crimson-text); min-width: 2.2em; }
+.overlayLink:active, .overlayLink[aria-current="true"] { color: var(--c-fg); }
+.overlayLink[aria-current="true"] i { color: var(--c-crimson); }
+.overlayLink:focus-visible { outline: 2px solid var(--c-fg); outline-offset: -2px; }
+@media (hover: hover) { .overlayLink:hover { color: var(--c-fg); } }
+.overlayCta {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 56px; padding: 0 1.25rem;
+  color: var(--c-fg); text-decoration: none; background: linear-gradient(100deg, var(--c-crimson-deep), var(--c-crimson)); border: 1px solid var(--c-crimson); letter-spacing: 0.18em; touch-action: manipulation;
+}
+.overlayCta:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 3px; }
+@media (min-width: 1024px) { .overlay { display: none; } }
+@media (max-height: 520px) { .overlay { justify-content: flex-start; } .overlayLink { min-height: 48px; padding: 0.35rem 0; font-size: 1.25rem; } }
+
+/* ───────────── global chrome: progress hairline, scene counter ───────────── */
+.nav { animation: chromeIn 1.2s var(--ease-cinematic) 4.6s both; }
+.progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 60; pointer-events: none; }
+.bar { display: block; height: 100%; background: var(--c-crimson); transform-origin: left; transform: scaleX(0); box-shadow: var(--glow-crimson); }
+.counter {
+  position: fixed; z-index: 50; left: calc(var(--section-pad-x) * 0.35); top: 50%; margin: 0; display: none;
+  writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg); white-space: nowrap;
+  animation: chromeIn 1.2s var(--ease-cinematic) 4.8s both;
+}
+@media (min-width: 1280px) { .counter { display: block; } }
+@keyframes chromeIn { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .nav, .counter, .overlay { animation: none; } .burger i { transition: none; } }
+/* Pre-loader: hold the chrome fade-in until the hero sequence starts (its 4.6 s / 4.8 s delays are hero-relative). */
+:global(html[data-preloader="active"]) .nav,
+:global(html[data-preloader="active"]) .counter { animation-play-state: paused; }

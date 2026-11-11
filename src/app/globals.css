@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+/* CRIMSON PROTOCOL → Tailwind utilities (bg-bg, text-fg, text-crimson, border-line …). */
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-bg-alt: var(--c-bg-alt);
+  --color-surface: var(--c-surface);
+  --color-line: var(--c-line);
+  --color-crimson: var(--c-crimson);
+  --color-crimson-deep: var(--c-crimson-deep);
+  --color-fg: var(--c-fg);
+  --color-fg-muted: var(--c-fg-muted);
+  --color-metal: var(--c-metal);
+}
+
+/*
+ * PRE-LOADER — page lock.
+ * html[data-preloader] = active (boot sequence) | exit (shutters opening, page already usable) | done | expired.
+ * Set by the inline script in layout.tsx and then by <Preloader />.
+ */
+html[data-preloader="active"],
+html[data-preloader="active"] body { overflow: hidden; overscroll-behavior: none; }
+html[data-preloader="active"] { scrollbar-gutter: stable; } /* same layout width before/after → no ScrollTrigger re-measure */
+/* No JS, JS failed, watchdog fired, or finished → the overlay can never block the page. */
+html:not([data-preloader="active"]):not([data-preloader="exit"]) [data-preloader-root] { display: none; }
+
+/*
+ * MOBILE FOUNDATIONS (Task 10)
+ */
+html {
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+  scroll-padding-top: var(--nav-h); /* anchor jumps land below the fixed header */
+  -webkit-tap-highlight-color: rgb(255 38 56 / 0.18);
+}
+/* `clip` (not `hidden`) → no horizontal scroll from any stray wide child, and position:sticky stages keep working. */
+html, body { overflow-x: clip; }
+@supports not (overflow: clip) { body { overflow-x: hidden; } }
+body { min-width: 320px; }
+/* No 300 ms tap delay / double-tap zoom on controls. */
+a, button, summary, label, input, select, textarea, [role="button"] { touch-action: manipulation; }
+/* Never let media or embedded content push the layout wider than the screen. */
+img, svg, video, canvas { max-width: 100%; }
+
+/* Static tier (no WebGL canvas): CSS-only atmosphere where the 3D film would be — same crimson palette, zero GPU work. */
+html[data-canvas="none"] body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(70% 38% at 80% 6%, rgb(255 38 56 / 0.13), transparent 70%),
+    radial-gradient(60% 34% at 8% 96%, rgb(157 24 38 / 0.16), transparent 70%),
+    linear-gradient(90deg, transparent 0 18%, rgb(255 38 56 / 0.05) 18.2%, transparent 18.6% 81.4%, rgb(255 38 56 / 0.05) 81.8%, transparent 82.2%);
+}
+
+/* Reduced motion: one global safety net on top of each module's own handling (no loops, no transitions, no smooth scroll). */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
