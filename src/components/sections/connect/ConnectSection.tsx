@@ -13,7 +13,7 @@ import type { LogoComponent } from "../tech/techIcons";
 import styles from "./connect.module.css";
 
 const HEADLINE = ["THE MACHINE IS BUILT.", "LET’S CREATE SOMETHING."] as const;
-const PORTRAIT_FALLBACK = "/images/hero/portrait-720.webp";
+const PORTRAIT_FALLBACK = "/images/hero/final-portrait-720p.webp";
 
 interface Channel { key: string; label: string; href: string; value: string; external: boolean; icon: "mail" | "linkedin" | "github" | "phone" }
 
