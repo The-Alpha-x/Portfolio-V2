@@ -26,10 +26,10 @@ export const PROJECTS: Project[] = [
     ...owner("cubicle-kitchens"), verb: "Engineered",
     problem: null,
     features: ["Restaurant ordering", "Streamlined daily restaurant workflows", "Operations automation", "Integrated e-commerce functionality"],
-    technical: ["Full-stack platform", "E-commerce functionality integrated with restaurant operations"],
+    technical: ["Full-stack platform including a customer website, restaurant owner dashboard, admin dashboard and a driver mobile app", "E-commerce functionality integrated with restaurant operations"],
     stack: ["Next.js", "React", "TypeScript", "Node.js", "Express", "MongoDB", "Stripe API"],
     links: { live: "https://cubiclekitchens.com", github: "" },
-    screenshots: [{ src: "/images/projects/cubicle-kitchens/1.webp", alt: "Illustration of the cubicle kitchens platform", width: 1280, height: 800 }],
+    screenshots: [{ src: "/images/projects/cubicle-kitchens/1.webp", alt: "Illustration of the cubicle kitchens platform", width: 1280, height: 800 }, { src: "/images/projects/cubicle-kitchens/2.webp", alt: "Illustration of the cubicle kitchens platform", width: 1280, height: 800 }, { src: "/images/projects/cubicle-kitchens/3.webp", alt: "Illustration of the cubicle kitchens platform", width: 1280, height: 800 }],
     needsConfirmation: [],
   },
   {
@@ -53,7 +53,13 @@ export const PROJECTS: Project[] = [
     features: ["Booking and reservation management", "Waitlist allocation", "Notifications", "Commission tracking", "Analytics dashboards", "Financial reporting", "Automated workflows"],
     technical: ["Automated booking workflows", "Waitlist allocation", "Analytics dashboards and financial reporting"],
     stack: ["React.js", "JavaScript", "Firebase", "Mailchimp"],
-    screenshots: [{ src: "/images/projects/sweatmate/1.webp", alt: "Illustration of the Sweatmate platform: stats, facility availability, bookings and analytics", width: 1280, height: 800 }], links: {},
+    screenshots: [
+      { src: "/images/projects/sweatmate/1.webp", alt: "Illustration of the Sweatmate platform: stats, facility availability, bookings and analytics", width: 1280, height: 800 },
+      { src: "/images/projects/sweatmate/2.webp", alt: "Illustration of the Sweatmate platform: stats, facility availability, bookings and analytics", width: 1280, height: 800 },
+      { src: "/images/projects/sweatmate/3.webp", alt: "Illustration of the Sweatmate platform: stats, facility availability, bookings and analytics", width: 1280, height: 800 },
+      { src: "/images/projects/sweatmate/4.webp", alt: "Illustration of the Sweatmate platform: stats, facility availability, bookings and analytics", width: 1280, height: 800 },
+      { src: "/images/projects/sweatmate/5.webp", alt: "Illustration of the Sweatmate platform: stats, facility availability, bookings and analytics", width: 1280, height: 800 }
+    ], links: {},
     needsConfirmation: [],
   },
   {
@@ -65,7 +71,12 @@ export const PROJECTS: Project[] = [
     features: ["Customizable questionnaires", "Scheduling", "Slack-bot automation"],
     technical: ["Slack API integration", "Slack-bot automation"],
     stack: ["React.js", "JavaScript", "SlackAPI", "Firebase", "GoogleCloudFunctions", "StripeAPI"],
-    screenshots: [{ src: "/images/projects/pulse/1.webp", alt: "Illustration of the Pulse platform: customizable questionnaires, scheduling, and Slack-bot automation", width: 1280, height: 800 }], links: {},
+    screenshots: [
+      { src: "/images/projects/pulse/1.webp", alt: "Illustration of the Pulse platform: customizable questionnaires, scheduling, and Slack-bot automation", width: 1280, height: 800 },
+      { src: "/images/projects/pulse/2.webp", alt: "Illustration of the Pulse platform: customizable questionnaires, scheduling, and Slack-bot automation", width: 1280, height: 800 },
+      { src: "/images/projects/pulse/3.webp", alt: "Illustration of the Pulse platform: customizable questionnaires, scheduling, and Slack-bot automation", width: 1280, height: 800 },
+      { src: "/images/projects/pulse/4.webp", alt: "Illustration of the Pulse platform: customizable questionnaires, scheduling, and Slack-bot automation", width: 1280, height: 800 }
+    ], links: {},
     needsConfirmation: [],
   },
   {

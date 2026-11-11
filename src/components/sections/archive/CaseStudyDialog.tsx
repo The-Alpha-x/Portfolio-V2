@@ -67,11 +67,11 @@ export default function CaseStudyDialog() {
 
           {project.problem ? (
             <section aria-labelledby="cs-problem"><h3 id="cs-problem" className="label-mono">Problem being solved</h3><p>{project.problem}</p></section>
-          ) : M && <p className={`${styles.pending} label-mono`}>PROBLEM — AWAITING YOUR INPUT</p>}
+          ) : null}
 
           <section aria-labelledby="cs-contrib">
             <h3 id="cs-contrib" className="label-mono">My contribution</h3>
-            <p>{project.verb} {project.name} as {project.position} at {project.company} ({project.period}), per my CV.</p>
+            <p>{project.verb} {project.name} as {project.position} at {project.company} ({project.period}).</p>
           </section>
 
           {project.features.length > 0 && (
