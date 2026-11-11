@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+  output: "export",
   // Mobile-first image pipeline (next/image): AVIF/WebP, phone-sized candidates, long CDN/browser cache.
   images: {
     formats: ["image/avif", "image/webp"],
