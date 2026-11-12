@@ -56,12 +56,13 @@ export const TECHNOLOGIES: readonly Technology[] = [
   // Data & Cloud
   { id: "firebase", name: "Firebase", category: "data", icon: "firebase", brand: "#ffca28", description: "Managed backend and cloud services." },
   { id: "mysql", name: "MySQL", category: "data", icon: "mysql", brand: "#4479a1", description: "Relational database for application data." },
-  { id: "MongoDB", name: "MongoDB", category: "data", icon: "mongodb", brand: "#47a248", description: "NoSQL database for flexible data storage." },
+  { id: "mongodb", name: "MongoDB", category: "data", icon: "mongodb", brand: "#47a248", description: "NoSQL database for flexible data storage." },
   // Tools & Frameworks
   { id: "git", name: "Git", category: "tools", icon: "git", brand: "#f05032", description: "Version control and collaborative development." },
   { id: "slack", name: "Slack API", category: "tools", icon: "slack", brand: "#e01e5a", description: "Slack bots and workflow automation through the Slack API." },
   { id: "stripe", name: "Stripe API", category: "tools", icon: "stripe", brand: "#635bff", description: "Payment processing and financial reporting through the Stripe API." },
   { id: "mailchimp", name: "Mailchimp API", category: "tools", icon: "mailchimp", brand: "#ffe01b", description: "Email marketing and automation through the Mailchimp API." },
+  { id: "sms-gateway", name: "SMS Gateway", category: "tools", icon: "sms", brand: "#ff626b", description: "SMS delivery and notifications through a third-party SMS gateway." },
   { id: "google-cloud", name: "Google Cloud Functions", category: "tools", icon: "googlecloud", brand: "#4285f4", description: "Serverless functions for backend automation and integrations." },
   { id: "jira", name: "Jira", category: "tools", icon: "jira", brand: "#0052cc", description: "Project management and issue tracking." },
   { id: "shadcn", name: "ShadCN", category: "tools", icon: "shadcn", brand: "#f2eeee", description: "Accessible, composable UI component primitives." },
@@ -92,13 +93,6 @@ export const TECH_LINKS: readonly (readonly [string, string])[] = [
   ["slack", "third-party"],
 ];
 
-/**
- * Project context from the brief (§7). `chain` lists ordered relations that are drawn as arcs when a technology is selected.
- *  CUBICLE KITCHENS  Next.js · React · TypeScript · Firebase · API integrations · Payment integrations
- *  RIYAPUHUNUWA      React · Laravel · PHP
- *  GROCERY APP       React · React Native · Payment gateway integration
- *  SLACK QUESTIONNAIRES (Pulse)  Slack API (a third-party service integration) — workflow automation / scheduling have no node.
- */
 export interface ProjectStack {
   /** Matches `src/data/projects.ts`. */
   id: string;
@@ -113,24 +107,30 @@ const nameOf = (id: string, fallback: string) => PROJECTS.find((p) => p.id === i
 export const PROJECT_STACKS: readonly ProjectStack[] = [
   {
     id: "cubicle-kitchens", name: nameOf("cubicle-kitchens", "Cubicle Kitchens"), note: "Restaurant ordering and operations platform",
-    members: ["react", "nextjs", "typescript", "firebase", "rest-api", "payments"],
-    chain: [["react", "nextjs"], ["nextjs", "typescript"], ["typescript", "firebase"], ["firebase", "payments"], ["rest-api", "payments"]],
+    members: ["react", "nextjs", "typescript", "tailwind", "nodejs", "mongodb", "rest-api", "stripe", "payments", "git", "jira"],
+    chain: [["react", "nextjs"], ["nextjs", "typescript"], ["typescript", "nodejs"], ["nodejs", "mongodb"], ["rest-api", "stripe"], ["stripe", "payments"]],
   },
   {
     id: "riyapuhunuwa", name: nameOf("riyapuhunuwa", "Riyapuhunuwa"), note: "Multi-branch driving school management platform",
-    members: ["react", "laravel", "php"],
-    chain: [["react", "laravel"], ["laravel", "php"]],
+    members: ["laravel", "php", "mysql", "sms-gateway", "git", "jira"],
+    chain: [["laravel", "php"], ["php", "mysql"], ["mysql", "sms-gateway"]],
   },
-  {
-    id: "grocery-ecommerce", name: nameOf("grocery-ecommerce", "Grocery E-commerce"), note: "Web and mobile grocery application",
-    members: ["react", "react-native", "payments"],
-    chain: [["react", "react-native"], ["react-native", "payments"]],
+    {
+    id: "sweatmate", name: nameOf("sweatmate", "Sweatmate"), note: "Multi-branch driving school management platform",
+    members: ["react", "javascript", "firebase", "mailchimp", "primereact", "git", "jira"],
+    chain: [["react", "javascript"], ["javascript", "firebase"], ["firebase", "mailchimp"], ["mailchimp", "primereact"]],
   },
   {
     id: "pulse", name: nameOf("pulse", "Pulse"), note: "Slack scheduled questionnaires",
-    members: ["slack", "third-party"],
-    chain: [["slack", "third-party"]],
+    members: ["react", "javascript", "slack", "third-party", "firebase", "google-cloud", "stripe", "payments", "git", "jira"],
+    chain: [["react", "javascript"], ["javascript", "slack"], ["slack", "third-party"], ["third-party", "firebase"], ["firebase", "google-cloud"], ["google-cloud", "stripe"], ["stripe", "payments"]],
   },
+  {
+    id: "grocery-ecommerce", name: nameOf("grocery-ecommerce", "Grocery E-commerce"), note: "Web and mobile grocery application",
+    members: ["react", "react-native", "javascript", "payments", "git", "jira"],
+    chain: [["react", "react-native"], ["react-native", "javascript"], ["javascript", "payments"]],
+  },
+
 ];
 
 export const projectsOf = (techId: string): ProjectStack[] => PROJECT_STACKS.filter((p) => p.members.includes(techId));

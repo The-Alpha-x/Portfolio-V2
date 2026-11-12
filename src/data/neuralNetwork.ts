@@ -52,6 +52,7 @@ export const TECH_POSITIONS: Readonly<Record<string, Vec3>> = {
   // Data & cloud — deepest layer
   firebase: [8.6, 1.4, -5.6],
   mysql: [12.0, 0.4, -4.6],
+  mongodb: [13.4, -1.6, -5.2],
   // Tools & frameworks
   git: [6.4, -6.4, 1.2],
   slack: [9.8, -6.2, 0.6],
